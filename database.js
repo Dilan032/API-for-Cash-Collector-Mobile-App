@@ -1,5 +1,5 @@
 const mysql = require("mysql");
-require('dotenv').config(); // get envirment variables
+require('dotenv').config(); // get envirment variables in (.env file)
 
 const db = mysql.createConnection({
     host: process.env.DATABASE_HOST,

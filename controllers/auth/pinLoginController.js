@@ -4,7 +4,7 @@ exports.pinLogin = (req, res) =>{
     // get user pin in front-end
     const {UserPin} = req.body;
 
-    db.query('SELECT * FROM users WHERE UserPin = ?', [UserPin], async (error, results) =>{
+    db.query('SELECT * FROM users WHERE UserPin = ?', [UserPin], (error, results) =>{
         if(error){
             console.log('error');
             return res.status(500).json({
@@ -18,8 +18,10 @@ exports.pinLogin = (req, res) =>{
         }
 
         if(results.length > 0){
-            // const user = results[0]; // Get the first user in the results array
-            return res.send({ success: true});
+            return res.status(200).json({ 
+                success: true,
+                message: 'User login successful'
+            });
 
         }
         

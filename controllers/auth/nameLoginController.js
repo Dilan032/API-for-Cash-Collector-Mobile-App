@@ -19,6 +19,7 @@ exports.userNameLogin = (req,res) =>{
             });
         }
 
+        // get data from users table releven user (sql quary)
         const user = results[0];
 
         // Compare the provided password with the hashed password in the database
@@ -39,7 +40,7 @@ exports.userNameLogin = (req,res) =>{
             // If password matches, login is successful
             return res.status(200).json({
                 success: true,
-                message: 'User login successful',
+                message: 'User login successful'
             });
         });
 
