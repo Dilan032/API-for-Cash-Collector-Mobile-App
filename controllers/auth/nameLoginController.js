@@ -1,5 +1,7 @@
 const db = require('../../database');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 exports.userNameLogin = (req,res) =>{
     // get user name and password from front-end
@@ -37,10 +39,18 @@ exports.userNameLogin = (req,res) =>{
                 });
             }
 
+            // get token key from (.env) file 
+            const token = jwt.sign(
+                {UserName: UserName}, 
+                process.env.TOKEN_KEY, 
+                {expiresIn: process.env.TOKEN_EXPIRATION_TIME} // Use expires time from (.env)
+            );
+
             // If password matches, login is successful
             return res.status(200).json({
                 success: true,
-                message: 'User login successful'
+                message: 'User login successful',
+                token:token
             });
         });
 

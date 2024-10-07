@@ -1,4 +1,5 @@
 const db = require('../../database');
+const jwt = require('jsonwebtoken');
 
 exports.pinLogin = (req, res) =>{
     // get user pin in front-end
@@ -17,10 +18,24 @@ exports.pinLogin = (req, res) =>{
             });
         }
 
+
+        //get user data from database users table
+        const user = results[0];
+        const UserName = user.UserName; 
+
+        // get token key from (.env) file 
+        const token = jwt.sign(
+            {UserName: UserName}, 
+            process.env.TOKEN_KEY, 
+            {expiresIn: process.env.TOKEN_EXPIRATION_TIME} // Use expires time from (.env)
+        );
+
+
         if(results.length > 0){
             return res.status(200).json({ 
                 success: true,
-                message: 'User login successful'
+                message: 'User login successful',
+                token:token
             });
 
         }
