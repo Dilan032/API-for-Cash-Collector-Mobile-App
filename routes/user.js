@@ -5,7 +5,8 @@ const auth = require('../middleware/auth');
 const userDetailsController = require('../controllers/userProfile/userDetailsController');
 
 // get loging user details
-router.get('/AccountDetails', auth,userDetailsController.userDetails);
+router.get('/accountDetails', auth,userDetailsController.userDetails);
+router.put('/updateDetails', auth,userDetailsController.updateUserDetails);
 
 
 
