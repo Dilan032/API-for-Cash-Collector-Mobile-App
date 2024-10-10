@@ -1,7 +1,7 @@
 const db = require('../../database');
 
 //contoll the get user details
-exports.userDetails = (req,res) =>{
+const userDetails = (req,res) =>{
     const user = req.result; // this data get from Json web token
     
     db.query('SELECT * FROM users WHERE UserName = ?', [user.UserName],(error, result) =>{
@@ -28,5 +28,16 @@ exports.userDetails = (req,res) =>{
 
     });
 
+};
 
+// new modules
+const updateUserDetails = (req, res) =>{
+    const user = req.result;
+};
+
+
+// export modules
+module.exports = {
+    userDetails,
+    updateUserDetails
 };

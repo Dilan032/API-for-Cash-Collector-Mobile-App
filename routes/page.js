@@ -16,9 +16,6 @@
 // router.get('/userDetails', auth,accountDetailsController.userDetails);
 
 
-// // for log out
-// //router.post('/logOut', logOutController.logOut );
-
 
 
 

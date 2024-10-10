@@ -1,11 +1,14 @@
 const db = require('../../database');
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+const md5 = require('md5');
 
 exports.userNameLogin = (req,res) =>{
     // get user name and password from front-end
     const {UserName, Password} = req.body;
+
+    // user password convert md5 and assign it to hashedPassword
+    const hashedPassword = md5(Password);
 
     // Query the database to find the user by UserName
     db.query('SELECT * FROM users WHERE UserName = ?', [UserName], (error, results) =>{
@@ -25,19 +28,12 @@ exports.userNameLogin = (req,res) =>{
         const user = results[0];
 
         // Compare the provided password with the hashed password in the database
-        bcrypt.compare(Password, user.Password, (err, isMatch) => {
-            if (err) {
-                console.error('Bcrypt error:', err);
-                return res.status(500).json({
-                    message: 'Server error, please try again later'
-                });
-            }
-
-            if (!isMatch) {
-                return res.status(401).json({
-                    message: 'Invalid password'
-                });
-            }
+        // Compare the provided hashed password with the hashed password in the database
+        if (hashedPassword !== user.Password) {
+            return res.status(401).json({
+                message: 'Invalid password'
+            });
+        }
 
             // get token key from (.env) file 
             const token = jwt.sign(
@@ -54,5 +50,4 @@ exports.userNameLogin = (req,res) =>{
             });
         });
 
-    });
 }
