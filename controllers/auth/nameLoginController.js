@@ -13,7 +13,6 @@ exports.userNameLogin = (req,res) =>{
     // Query the database to find the user by UserName
     db.query('SELECT * FROM users WHERE UserName = ?', [UserName], (error, results) =>{
         if(error){
-            console.log('error');
             return res.status(500).json({
                 message:'Server error, please try again later'
             });

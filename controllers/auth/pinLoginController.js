@@ -11,7 +11,6 @@ exports.pinLogin = (req, res) =>{
 
     db.query('SELECT * FROM users WHERE mobile_password = ?', [hashedPassword], (error, results) =>{
         if(error){
-            console.log('Server error');
             return res.status(500).json({
                 message:'Server error, please try again later'
             });

@@ -14,7 +14,7 @@ const userDetails = (req,res) =>{
         }
 
         // Return all user details 
-        res.status(200).json( result[0] ); // get firt result and send to the client
+        res.status(200).json( result[0] ); // get first result and send to the client
         
     });
 };
@@ -45,14 +45,13 @@ const updateUserDetails = (req, res) =>{
     }
 
     query = query + field.join(', '); // field add to the query
-    query = query + 'WHERE UserName = ?'; // add the sql stetment to the excising query
+    query = query + ' WHERE UserName = ?'; // add the sql stetment to the excising query
     values.push(user.UserName); // add the query for idenfify the user
 
     // main query for Run
     db.query(query, values, (error, result) => {
         if (error)
             { return res.status(500).json({ message: 'Server error, please try again later' })};
-            console.log('Database Error:', error);
     
 
         // checking whether any user record was updated
