@@ -1,3 +1,7 @@
+// this file contain 'show login user all details' module and 'login user all details update' module
+// Add SQL query that changes dynamically based on user input
+
+
 const db = require('../../database');
 
 //module for get user details

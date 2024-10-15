@@ -18,3 +18,4 @@ app.get('/', (req, res) => {
 
 app.use('/login', require('./routes/login')); // {/login/pin} {/login/UserName} routes in (routes folder login.js)
 app.use('/user', require('./routes/user')); // {/user/AccountDetails} {/user/updateUserPassword} routes in (routes folder user.js)
+app.use('/request', require('./routes/forgotPassword')); // {/request/get-otp} {/request/send-otp} {/request/reset-password} routes in (routes folder forgotPassword.js)

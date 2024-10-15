@@ -7,6 +7,8 @@ const userPasswordController = require('../controllers/userProfile/userPasswordC
 
 // get loging user details
 router.get('/accountDetails', auth,userDetailsController.userDetails);
+
+// update user deails
 router.put('/updateDetails', auth,userDetailsController.updateUserDetails);
 
 // update user password
