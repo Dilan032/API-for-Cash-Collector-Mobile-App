@@ -5,22 +5,24 @@
 <br>
 
 ## login
-- /login/pin  => input -> `5 digit number`
-- /login/UserName => input -> `UserName`  and `Password`
+- /login/pin 🙇‍♂️ `5 digit number`
+- /login/UserName 🙇‍♂️ `UserName`  and `Password`
+
+  <br>
 
 ## user
-- /user/AccountDetails => no input -> `get request`
-- /user/updateUserPassword => input -> `currentPassword` and `newPassword`
+- /user/AccountDetails 🙇‍♂️ `get request`
+- /user/updateUserPassword 🙇‍♂️ `currentPassword` and `newPassword`
 
 <br>
 
 ## forgotPassword
-- /request/get-otp => input -> `email`
-- /request/verify-otp => input -> `email` and `password_reset_otp`
-- /request/reset-password => input -> `email` and `Password`
+- /request/get-otp 🙇‍♂️ `email`
+- /request/verify-otp 🙇‍♂️ `email` and `password_reset_otp`
+- /request/reset-password 🙇‍♂️ `email` and `Password`
 
 <br>
 
 ## customer
-- /customer/all-details => no input -> `get request`
-- /customer/search => input -> `Name` user should enter at least one letter
+- /customer/all-details 🙇‍♂️ `get request`
+- /customer/search 🙇‍♂️ `Name` user should enter at least one letter
