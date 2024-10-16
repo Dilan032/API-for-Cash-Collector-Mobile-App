@@ -17,8 +17,18 @@ const userDetails = (req,res) =>{
             return res.status(404).json({ message: 'User not found' }); 
         }
 
+        const userDetails = result[0]; // Get the first result
+
+        // Check if the user has an image and convert it to a string if it exists
+        // if (userDetails.user_photo) {
+        //     userDetails.user_photo = userDetails.user_photo.toString(); // Ensure it's a string
+        // }
+
+        // Return all user details
+        res.status(200).json(userDetails);
+
         // Return all user details 
-        res.status(200).json( result[0] ); // get first result and send to the client
+        //res.status(200).json( result[0] ); // get first result and send to the client
         
     });
 };
