@@ -8,7 +8,7 @@ const forgotPasswordController = require('../controllers/auth/forgotPasswordCont
 router.post('/get-otp', forgotPasswordController.getOTP);
 
 // enter OTP and send to the server
-router.post('/send-otp', forgotPasswordController.sendOTP);
+router.post('/verify-otp', forgotPasswordController.verifyOTP);
 
 // password reset
 router.post('/reset-password', forgotPasswordController.resetPassword);
