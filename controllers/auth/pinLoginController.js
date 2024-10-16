@@ -33,6 +33,22 @@ exports.pinLogin = (req, res) =>{
             {expiresIn: process.env.TOKEN_EXPIRATION_TIME} // Use expires time from (.env)
         );
 
+        // Get the current date and time in UTC
+        const currentDateTime = new Date();
+
+        // Adjust for Sri Lanka Standard Time (UTC +5:30)
+        const sriLankaOffset = 5.5 * 60 * 60 * 1000; // 5 hours and 30 minutes in milliseconds
+        const sriLankaTime = new Date(currentDateTime.getTime() + sriLankaOffset);
+
+        // Format the date to 'YYYY-MM-DD HH:MM:SS'
+        const formattedDateTime = sriLankaTime.toISOString().slice(0, 19).replace('T', ' ');
+
+        // update user last login time and date
+        db.query('UPDATE users SET LastLogin = ? WHERE UserName = ?', [formattedDateTime, UserName],(error, result) =>{
+            if (error)
+            { return res.status(500).json({ message: 'Server error, please try again later' })};
+        });
+        
 
         if(results.length > 0){
             return res.status(200).json({ 
