@@ -1,6 +1,11 @@
 <h1 align="center"> API for cash Collector back-end </h1>
 
-# end-points
+# End-points
+
+<br>
+
+> [!IMPORTANT]
+> ## Always user should send `Bearer {Token}`
 
 <br>
 
