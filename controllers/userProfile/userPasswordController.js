@@ -1,5 +1,4 @@
 const db = require('../../database');
-const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const md5 = require('md5');
 

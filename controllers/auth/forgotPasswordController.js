@@ -1,19 +1,14 @@
 // this file contain 'getOTP' module , 'send-otp' module and 'reset-password' module
 
 const db = require('../../database');
-const nodemailer = require('nodemailer');
-require('dotenv').config(); // get envirment variables in (.env file)
+require('dotenv').config(); 
 const md5 = require('md5');
 
+const { forgotPasswordOTPEmailStructure } = require('../../functions/mail/forgotPassword'); // Import the function (user receive email structure)
+const { mailConfigDetails } = require('../../functions/mail/mailConfig'); // Import the mail configuration details
 
-// gmail configuration details
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.MAIN_EMAIL,
-        pass: process.env.EMAIL_PASSWORD
-    }
-});
+// mail configuration details -> function/mail/mailConfig.js
+const transporter = mailConfigDetails();
 
 
 // GetOTP module
@@ -38,38 +33,15 @@ const getOTP = (req, res)=> {
             if (err) 
                 return res.status(500).json({ error: 'Database error' });
 
-            // Send email with the OTP to the user
-            const mailOptions = {
-                from: process.env.MAIN_EMAIL, // get .env file main email
-                to: email,
-                subject: 'Password Reset Request',
-                html: `
-                        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #fff;">
-                            <h2 style="color: #4CAF50;">Password Reset Request</h2>
-                            <p>You have requested to reset your password. Please use the OTP below to complete the process:</p>
+            // user receive email structure -> function/mail/forgotPassword.js
+            const mailOptions = forgotPasswordOTPEmailStructure(email, OTP);
 
-                            <div style="font-size: 20px; font-weight: bold; padding: 10px; background-color: #b3b1b1; border: 1px solid #ddd; display: inline-block;">
-                                ${OTP}
-                            </div>
-
-                            <p>This OTP is valid for <strong>${process.env.OTP_EXPIRATION_TIME} minute</strong>.</p>
-                            <p>If you did not request a password reset, please ignore this email or contact support.</p>
-                            
-                            <hr style="border: none; border-top: 1px solid #eee;">
-
-                            <p style="font-size: 12px; color: #999;">
-                                This is an automated message, please do not reply.
-                            </p>
-                        </div>
-                        `
-            };
 
             transporter.sendMail(mailOptions, (err, info) => {
                 if (err) 
                     return res.status(500).json({ error: 'Error sending email' });
 
-                res.json({ 
-                    OTP: OTP, // for developing. show OTP
+                res.status(200).json({ 
                     message: 'Password reset email sent' 
                 });
             });

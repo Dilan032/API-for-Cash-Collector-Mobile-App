@@ -1,6 +1,7 @@
 const db = require('../../database');
-const jwt = require('jsonwebtoken');
 const md5 = require('md5');
+const { generateToken } = require('../../functions/auth/generateToken'); // Import the function
+const { getDateAndTime } = require('../../functions/dateAndTime'); // Import the function
 
 exports.pinLogin = (req, res) =>{
     // get user pin in front-end
@@ -26,27 +27,17 @@ exports.pinLogin = (req, res) =>{
         const user = results[0];
         const UserName = user.UserName; 
 
-        const token = jwt.sign(
-            {UserName: UserName}, // Payload with the UserName
-            process.env.TOKEN_KEY, // Secret key from .env
-            {expiresIn: process.env.TOKEN_EXPIRATION_TIME} // Use expires time from (.env)
-        );
+        // use generateToken function in -> function/auth/generateToken.js
+        const token = generateToken(UserName);
 
-        // Get the current date and time in UTC
-        const currentDateTime = new Date();
-
-        // Adjust for Sri Lanka Standard Time (UTC +5:30)
-        const sriLankaOffset = 5.5 * 60 * 60 * 1000; // 5 hours and 30 minutes in milliseconds
-        const sriLankaTime = new Date(currentDateTime.getTime() + sriLankaOffset);
-
-        // Format the date to 'YYYY-MM-DD HH:MM:SS'
-        const formattedDateTime = sriLankaTime.toISOString().slice(0, 19).replace('T', ' ');
+        // use formattedDateTime function in -> function/dateAndTime.js
+        const formattedDateTime = getDateAndTime();
 
         // update user last login time and date
-        db.query('UPDATE users SET LastLogin = ? WHERE UserName = ?', [formattedDateTime, UserName],(error, result) =>{
+        db.query('UPDATE users SET LastLogin = ? WHERE UserName = ?', [formattedDateTime, UserName],(error) =>{
             if (error)
             { return res.status(500).json({ message: 'Server error, please try again later' })};
-        });
+        }); // end query
         
 
         if(results.length > 0){
