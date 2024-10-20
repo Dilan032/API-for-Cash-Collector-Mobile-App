@@ -26,10 +26,9 @@ exports.pinLogin = (req, res) =>{
         const user = results[0];
         const UserName = user.UserName; 
 
-        // get token key from (.env) file 
         const token = jwt.sign(
-            {UserName: UserName}, 
-            process.env.TOKEN_KEY, 
+            {UserName: UserName}, // Payload with the UserName
+            process.env.TOKEN_KEY, // Secret key from .env
             {expiresIn: process.env.TOKEN_EXPIRATION_TIME} // Use expires time from (.env)
         );
 
