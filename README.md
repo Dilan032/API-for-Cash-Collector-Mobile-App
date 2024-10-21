@@ -18,6 +18,8 @@
 ## user
 - /user/AccountDetails 🙇‍♂️ `get request`
 - /user/updateUserPassword 🙇‍♂️ `currentPassword` and `newPassword`
+- /user/all-details 🙇‍♂️ `get request`
+- /user/search 🙇‍♂️ `Name` user should enter at least one letter
 
 <br>
 
@@ -31,3 +33,6 @@
 ## customer
 - /customer/all-details 🙇‍♂️ `get request`
 - /customer/search 🙇‍♂️ `Name` user should enter at least one letter
+
+## collectAmount
+- /collectAmount/all 🙇‍♂️ `post request` user must enter `accountNumber` and user can enter any value in database (database column name) to update(store)
