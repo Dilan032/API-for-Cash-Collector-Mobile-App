@@ -4,7 +4,7 @@ const db = require('../../database');
 //module for get one Customer details
 exports.oneCustomerDetails = (req,res) =>{
     
-    const { RegId } = req.body; // get the customer RegId from user
+    const { RegId } = req.params; // get the customer RegId from URL
 
     if (!RegId) {
         return res.status(400).json({ message: 'RegId is required' }); // Handle missing RegId

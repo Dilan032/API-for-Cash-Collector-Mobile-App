@@ -12,7 +12,7 @@ router.get('/all-details', auth,allCustomerDetailsController.allCustomerDetails)
 router.get('/search', auth,searchCustomerController.searchCustomer);
 
 // get one customer details
-router.get('/details', auth,oneCustomerDetailsController.oneCustomerDetails);
+router.get('/details/:RegId', auth,oneCustomerDetailsController.oneCustomerDetails);
 
 
 // Export the router
