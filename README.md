@@ -37,7 +37,7 @@
 <br>
 
 ## customer
-- /customer/details |`get request`| get one customer details
+- /customer/details/:RegId |`get request`| get one customer details `:RegId` is customer id
 - /customer/all-details 🙇‍♂️ |`get request`|
 - /customer/search 🙇‍♂️ |`post request`| `Name` user should enter at least one letter
 
