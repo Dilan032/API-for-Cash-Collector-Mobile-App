@@ -1,7 +1,7 @@
 <h1 align="center"> API for cash Collector back-end </h1>
 
 ## Node.js packages
-| `bcrypt` | `body-parser` | `dotenv` | `express` | `jsonwebtoken` | `md5` | `nodemon` | `nodemailer` | `mysql` |
+| `body-parser` | `dotenv` | `express` | `jsonwebtoken` | `md5` | `nodemon` | `nodemailer` | `mysql` |
 <hr>
 
 # End-points
