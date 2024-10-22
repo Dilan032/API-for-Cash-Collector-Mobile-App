@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/login', require('./routes/login')); // {/login/pin} {/login/UserName} routes in (routes folder login.js)
-app.use('/user', require('./routes/user')); // {/user/AccountDetails} {/user/updateUserPassword} {/user/all-details} {/user/search} routes in (routes folder user.js)
+app.use('/user', require('./routes/user')); // {/user/AccountDetails} {/user/updateUserPassword} {/user/all-details} {/user/search} {/user/updateDetails} routes in (routes folder user.js)
 app.use('/request', require('./routes/forgotPassword')); // {/request/get-otp} {/request/verify-otp} {/request/reset-password} routes in (routes folder forgotPassword.js)
 app.use('/customer', require('./routes/customer.js')); // {/customer/all-details} {/customer/search} routes in (routes folder customer.js)
 app.use('/collectAmount', require('./routes/collectAmount.js')); // { /collectAmount/all }
