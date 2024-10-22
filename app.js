@@ -13,7 +13,7 @@ app.listen(port,()=>{ console.log(`Sever Start on Port ${port}`); });
 
 //define routes
 app.get('/hello', (req, res) => {
-    res.send('hello'); // Send the response 'hello'
+    res.sendFile(path.join(__dirname, 'hello.html')); // Adjust the path as needed
 });
 
 app.use('/login', require('./routes/login')); // {/login/pin} {/login/UserName} routes in (routes folder login.js)
