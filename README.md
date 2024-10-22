@@ -37,6 +37,7 @@
 <br>
 
 ## customer
+- /customer/details |`get request`| get one customer details
 - /customer/all-details 🙇‍♂️ |`get request`|
 - /customer/search 🙇‍♂️ |`post request`| `Name` user should enter at least one letter
 
