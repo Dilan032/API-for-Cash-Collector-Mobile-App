@@ -7,6 +7,12 @@ exports.allUserDetails = (req,res) =>{
     db.query('SELECT * FROM cussup WHERE cussupcat_id = ?', ['CS'],(error, result) =>{
         if (error) {
             return res.status(500).json({ message: 'Server error, please try again later'  });
+        } else {
+            // Loop through the results and remove the password field and mobile_password field
+            result.forEach(row => {
+                delete row.Password;  // Remove the password field
+                delete row.mobile_password;  // Remove the mobile_password field
+            });
         }
 
         if (result.length === 0) {

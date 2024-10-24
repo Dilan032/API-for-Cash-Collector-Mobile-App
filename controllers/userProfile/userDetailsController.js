@@ -11,6 +11,12 @@ const userDetails = (req,res) =>{
     db.query('SELECT * FROM users WHERE UserName = ?', [user.UserName],(error, result) =>{
         if (error) {
             return res.status(500).json({ message: 'Server error, please try again later'  });
+        }else {
+            // Loop through the results and remove the password field and mobile_password field
+            result.forEach(row => {
+                delete row.Password;  
+                delete row.mobile_password;  
+            });
         }
 
         if (result.length === 0) {
