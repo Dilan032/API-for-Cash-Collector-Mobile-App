@@ -4,6 +4,7 @@ const db = require('../../database');
 exports.collectAmount = (req, res) => {
     const customerDetails = req.body; // Get data from the login user
     const accountNumber = customerDetails.AccNo;
+    const Bal = customerDetails.Bal;
 
     if (!accountNumber) {
         return res.status(400).json({ message: 'AccNo is required' }); // Handle missing AccNo
@@ -42,6 +43,21 @@ exports.collectAmount = (req, res) => {
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: 'Account not found or no changes made' });
         }
+
+
+        // update placc table
+
+        // get current date
+        const currentDate = new Date();
+        const LastTraDat = currentDate.toISOString().split('T')[0]; // Extracts 'YYYY-MM-DD'
+
+        db.query('UPDATE placc SET Bal = ?, LastTraDat = ? WHERE AccNo = ?', [Bal, LastTraDat, accountNumber], (error) => {
+            if (error) {
+                return res.status(500).json({ message: 'Server error, please try again later' });
+            }
+        }); // end query
+
+
 
         // Success response for update
         res.status(200).json({

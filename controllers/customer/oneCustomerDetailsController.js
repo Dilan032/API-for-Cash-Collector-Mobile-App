@@ -1,6 +1,9 @@
 const { request } = require('express');
 const db = require('../../database');
 
+// this module show only => Accounts (payable for the customer)
+
+
 //module for get one Customer details
 exports.oneCustomerDetails = (req,res) =>{
     
@@ -11,8 +14,9 @@ exports.oneCustomerDetails = (req,res) =>{
     }
     
     // get all details from placc table
-    db.query('SELECT * FROM placc WHERE cussup_RegId = ? ORDER BY OpnDat ASC', [RegId],(error, result) =>{
+    db.query('SELECT * FROM placc WHERE OpnBal != Bal AND cussup_RegId = ? ORDER BY OpnDat ASC', [RegId],(error, result) =>{
         if (error) {
+            console.error('Database error:', error);
             return res.status(500).json({ message: 'Server error, please try again later'  });
         }
 
