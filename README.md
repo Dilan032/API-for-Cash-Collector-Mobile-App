@@ -21,8 +21,8 @@
 
 ## user
 - /user/AccountDetails 🙇‍♂️ |`get request`|
-- /user/updateUserPassword 🙇‍♂️ |`post request`| `currentPassword` and `newPassword`
-- /user/updateDetails 🙇‍♂️ |`post request`| user can enter any value in database (database column name) to update (dynamic sql query)
+- /user/updateUserPassword 🙇‍♂️ |`put request`| `currentPassword` and `newPassword`
+- /user/updateDetails 🙇‍♂️ |`put request`| user can enter any value in database (database column name) to update (dynamic sql query)
 -
 - /user/all-details 🙇‍♂️ |`get request`| (get all users deatils)
 - /user/search 🙇‍♂️ |`post request`| `Name` user should enter at least one letter
