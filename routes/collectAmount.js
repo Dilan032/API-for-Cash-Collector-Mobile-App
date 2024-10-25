@@ -9,9 +9,9 @@ const showTodayCollection = require('../controllers/collectAmount/showTodayColle
 
 
 // store customer payment details
-router.post('/all', collectAmountFromCustomer.collectAmount);
+router.post('/all', auth,collectAmountFromCustomer.collectAmount);
 
-router.get('/dayCollection', showTodayCollection.showTodayCollection);
+router.get('/dayCollection', auth,showTodayCollection.showTodayCollection);
 
 
 // Export the router
