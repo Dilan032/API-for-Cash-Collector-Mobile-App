@@ -22,7 +22,7 @@
 ## user
 - /user/AccountDetails 🙇‍♂️ |`get request`|
 - /user/updateUserPassword 🙇‍♂️ |`post request`| `currentPassword` and `newPassword`
-- /user/updateDetails 🙇‍♂️ |`post request`| user can enter any value in database (database column name) to update(store) (dynamic sql query)
+- /user/updateDetails 🙇‍♂️ |`post request`| user can enter any value in database (database column name) to update (dynamic sql query)
 -
 - /user/all-details 🙇‍♂️ |`get request`| (get all users deatils)
 - /user/search 🙇‍♂️ |`post request`| `Name` user should enter at least one letter
@@ -45,3 +45,5 @@
 
 ## collectAmount
 - /collectAmount/all 🙇‍♂️ |`post request`| user must enter `accountNumber` and user can enter any value in database (database column name) to update (dynamic sql query)
+
+- /collectAmount/dayCollection 🙇‍♂️ |`get request`| show Today Collection
