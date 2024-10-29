@@ -21,3 +21,5 @@ app.use('/user', require('./routes/user')); // {/user/AccountDetails} {/user/upd
 app.use('/request', require('./routes/forgotPassword')); // {/request/get-otp} {/request/verify-otp} {/request/reset-password} routes in (routes folder forgotPassword.js)
 app.use('/customer', require('./routes/customer.js')); // {/customer/all-details} {/customer/search} {/customer/details/:RegId} routes in (routes folder customer.js)
 app.use('/collectAmount', require('./routes/collectAmount.js')); // { /collectAmount/all } {/collectAmount/dayCollection}
+
+module.exports = app;
