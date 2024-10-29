@@ -26,6 +26,6 @@ exports.oneCustomerDetails = (req,res) =>{
 
         // Return all customer details (send entire result array to the client)
         res.status(200).json(result);
-        
+   
     });
 };

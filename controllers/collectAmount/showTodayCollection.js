@@ -7,7 +7,7 @@ exports.showTodayCollection = (req, res) => {
     const currentDate = new Date();
     const Today = currentDate.toISOString().split('T')[0]; // Extracts 'YYYY-MM-DD'
 
-    // First query to get cussup_RegId from placc table
+    // First query to get today transaction
     db.query('SELECT * FROM placc WHERE LastTraDat = ?', [Today], (error, placcResult) => {
         if (error) {
             return res.status(500).json({ message: 'Server error, please try again later' });
@@ -30,18 +30,45 @@ exports.showTodayCollection = (req, res) => {
                 return res.status(404).json({ message: 'No accounts found' });
             }
 
-            // Combine data from both tables (if needed)
+            // Combine data from both tables
             const combinedResult = {
                 cussup: cussupResult,
                 placc: placcResult
             };
 
-            // if(cussupResult.RegId == placcResult.cussup_RegId){
-            //     placcResult
-            // }
+             // Initialize dailyTotal object to accumulate totals
+             const dailyTotal = {};
 
-            // Return the combined result
-            return res.status(200).json(combinedResult);
+             // Iterate over each customer in cussupResult
+             cussupResult.forEach(cussupRow => {
+                 const cusName = cussupRow.Name;
+                 const RegId = cussupRow.RegId;
+ 
+                 // Initialize the customer's total if not already done
+                 if (!dailyTotal[cusName]) {
+                     dailyTotal[cusName] = 0;
+                 }
+ 
+                 // Find matching records in placcResult and accumulate DailyTotal
+                 placcResult.forEach(placcRow => {
+                     if (RegId === placcRow.cussup_RegId) {
+                         dailyTotal[cusName] += placcRow.DailyTotal;
+                     }
+                 });
+             });
+
+             // Calculate total for all customers by summing up individual daily totals
+            const overallTotal = Object.values(dailyTotal).reduce((acc, value) => acc + value, 0);
+ 
+             // Create an array of results with customer names and their daily totals
+             const results = Object.keys(dailyTotal).map(cusName => ({
+                 CusName: cusName,
+                 dailyTotal: dailyTotal[cusName]
+             }));
+ 
+
+             // Return the combined result
+             return res.status(200).json({ individualTotals: results, overallTotal });
             
         });
     });
