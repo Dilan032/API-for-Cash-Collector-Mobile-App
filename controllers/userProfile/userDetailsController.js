@@ -25,16 +25,21 @@ const userDetails = (req,res) =>{
 
         const userDetails = result[0]; // Get the first result
 
-        // Check if the user has an image and convert it to a string if it exists
-        // if (userDetails.user_photo) {
-        //     userDetails.user_photo = userDetails.user_photo.toString(); // Ensure it's a string
-        // }
 
-        // Return all user details
-        res.status(200).json(userDetails);
+        // Convert OpnDat and DueDat to Sri Lanka Standard Time (UTC +5:30)
+        const convertedResult = result.map(row => {
+            // Create Date objects
+            const created_dateSLST = new Date(new Date(row.created_date).getTime() + (5 * 60 + 30) * 60000);
 
-        // Return all user details 
-        //res.status(200).json( result[0] ); // get first result and send to the client
+            // Return a new row object with converted dates
+            return {
+                ...row,
+                created_date: created_dateSLST
+            };
+        });
+
+        // Return all customer details with SLST dates
+        res.status(200).json(convertedResult);
         
     });
 };

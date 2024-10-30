@@ -19,8 +19,20 @@ exports.allUserDetails = (req,res) =>{
             return res.status(404).json({ message: 'User details not found' }); 
         }
 
-        // Return all user details (send entire result array to the client)
-        res.status(200).json(result);
+        // Convert OpnDat and DueDat to Sri Lanka Standard Time (UTC +5:30)
+        const convertedResult = result.map(row => {
+            // Create Date objects
+            const created_dateSLST = new Date(new Date(row.created_date).getTime() + (5 * 60 + 30) * 60000);
+
+            // Return a new row object with converted dates
+            return {
+                ...row,
+                created_date: created_dateSLST
+            };
+        });
+
+        // Return all customer details with SLST dates
+        res.status(200).json(convertedResult);
         
     });
 };

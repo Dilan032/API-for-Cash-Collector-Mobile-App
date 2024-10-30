@@ -24,8 +24,22 @@ exports.oneCustomerDetails = (req,res) =>{
             return res.status(404).json({ message: 'Customer details not found' }); 
         }
 
-        // Return all customer details (send entire result array to the client)
-        res.status(200).json(result);
+        // Convert OpnDat and DueDat to Sri Lanka Standard Time (UTC +5:30)
+        const convertedResult = result.map(row => {
+            // Create Date objects
+            const opnDatSLST = new Date(new Date(row.OpnDat).getTime() + (5 * 60 + 30) * 60000);
+            const dueDatSLST = new Date(new Date(row.DueDat).getTime() + (5 * 60 + 30) * 60000);
+
+            // Return a new row object with converted dates
+            return {
+                ...row,
+                OpnDat: opnDatSLST,
+                DueDat: dueDatSLST
+            };
+        });
+
+        // Return all customer details with SLST dates
+        res.status(200).json(convertedResult);
    
     });
 };
