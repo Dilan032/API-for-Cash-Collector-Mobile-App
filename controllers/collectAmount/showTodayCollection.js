@@ -3,12 +3,18 @@ const db = require('../../database');
 // Module for getting all Customer details
 exports.showTodayCollection = (req, res) => {
 
+    const { EmpCode } = req.params; // get the login user EmpCode from URL
+
+    if (!EmpCode) {
+        return res.status(400).json({ message: 'EmpCode is required' }); // Handle missing EmpCode
+    }
+
     // Get current date
     const currentDate = new Date();
     const Today = currentDate.toISOString().split('T')[0]; // Extracts 'YYYY-MM-DD'
 
     // First query to get today transaction
-    db.query('SELECT * FROM placc WHERE LastTraDat = ?', [Today], (error, placcResult) => {
+    db.query('SELECT * FROM placc WHERE LastTraDat = ? AND EmpCode = ?', [Today, EmpCode], (error, placcResult) => {
         if (error) {
             return res.status(500).json({ message: 'Server error, please try again later' });
         }

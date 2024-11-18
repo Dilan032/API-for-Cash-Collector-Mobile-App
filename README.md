@@ -46,4 +46,4 @@
 ## collectAmount
 - /collectAmount/all 🙇‍♂️ |`post request`| user must enter `accountNumber` and user can enter any value in database (database column name) to update (dynamic sql query)
 
-- /collectAmount/dayCollection 🙇‍♂️ |`get request`| show Today Collection
+- /collectAmount/dayCollection/:EmpCode 🙇‍♂️ |`get request` | user must send `EmpCode` in URL | show Today Collection

@@ -11,11 +11,6 @@ const port = process.env.PORT || 3000;
 app.listen(port,()=>{ console.log(`Sever Start on Port ${port}`); });
     
 
-//define routes
-app.get('/hello', (req, res) => {
-    res.sendFile(path.join(__dirname, 'hello.html')); // Adjust the path as needed
-});
-
 app.use('/login', require('./routes/login')); // {/login/pin} {/login/UserName} routes in (routes folder login.js)
 app.use('/user', require('./routes/user')); // {/user/AccountDetails} {/user/updateUserPassword} {/user/all-details} {/user/search} {/user/updateDetails} routes in (routes folder user.js)
 app.use('/request', require('./routes/forgotPassword')); // {/request/get-otp} {/request/verify-otp} {/request/reset-password} routes in (routes folder forgotPassword.js)
