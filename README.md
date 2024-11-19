@@ -45,6 +45,7 @@
 
 ## collectAmount
 - /collectAmount/cashCollect 🙇‍♂️ |`post request`| user must enter `accountNumber` , `Bal` , `EmpCode` , `DailyTotal`
+- /collectAmount/bankTransfer 🙇‍♂️ |`post request`| user must enter `accountNumber` , `Bal` , `EmpCode` , `DailyTotal`
 - /collectAmount/bankCheque  🙇‍♂️ |`post request`| user must enter `accountNumber` , `Bal` , `EmpCode` , `DailyTotal` , `BankName` , `CheqNo` , `CheqDat`
 
 - /collectAmount/dayCollection/:EmpCode 🙇‍♂️ |`get request` | user must send `EmpCode` in URL | show Today Collection
