@@ -3,16 +3,11 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 
 //define controller
-// const collectAmountFromCustomer = require('../controllers/collectAmount/fromCustomerController');
 
 const cashController = require('../controllers/collectAmount/cashController');
 const bankChequeController = require('../controllers/collectAmount/bankChequeController');
 const showTodayCollection = require('../controllers/collectAmount/showTodayCollection');
 
-
-
-// store customer payment details
-// router.post('/all', auth,collectAmountFromCustomer.collectAmount);
 
 
 router.post('/cashCollect', auth,cashController.cashCollect);
