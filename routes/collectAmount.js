@@ -6,6 +6,7 @@ const auth = require('../middleware/auth');
 // const collectAmountFromCustomer = require('../controllers/collectAmount/fromCustomerController');
 
 const cashController = require('../controllers/collectAmount/cashController');
+const bankChequeController = require('../controllers/collectAmount/bankChequeController');
 const showTodayCollection = require('../controllers/collectAmount/showTodayCollection');
 
 
@@ -15,6 +16,7 @@ const showTodayCollection = require('../controllers/collectAmount/showTodayColle
 
 
 router.post('/cashCollect', auth,cashController.cashCollect);
+router.post('/bankCheque', auth,bankChequeController.bankCheque);
 
 router.get('/dayCollection/:EmpCode', auth,showTodayCollection.showTodayCollection);
 
