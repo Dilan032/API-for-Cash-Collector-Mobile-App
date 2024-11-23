@@ -12,7 +12,7 @@ exports.bankCheque = (req, res) => {
     let updateCount = 0;
 
     customerDetails.forEach((details, index) => {
-        const { AccNo: accountNumber, Bal, EmpCode, DailyTotal, BankName, CheqNo, CheqDat } = details;
+        const { AccNo: accountNumber, Bal, EmpCode, DailyTotal, BankName, CheqNo, CheqDat, receiptImg } = details;
 
         const currentDate = new Date();
         const LastTraDat = currentDate.toISOString().split('T')[0]; // 'YYYY-MM-DD'

@@ -13,8 +13,26 @@ exports.cashCollect = (req, res) => {
 
     customerDetails.forEach((details, index) => {
         const { AccNo: accountNumber, Bal, EmpCode, DailyTotal } = details;
+
         const currentDate = new Date();
-        const LastTraDat = currentDate.toISOString().split('T')[0]; // 'YYYY-MM-DD'
+        const today = currentDate.toISOString().split('T')[0]; // 'YYYY-MM-DD'
+
+        // Check and Collect Daily Total
+        db.query('SELECT LastTraDat, DailyTotal FROM placc WHERE AccNo = ?', [accountNumber],(error, result) =>{
+            if (error) {
+                return res.status(500).json({ message: 'Server error, please try again later' });
+            }
+
+            if (result.length === 0) {
+                return res.status(404).json({ message: 'There is no LastTraDat and DailyTotal' });
+
+            }if(result.LastTraDat === today){
+                DailyTotal = DailyTotal + result.DailyTotal;
+                console.log(DailyTotal);
+                
+            }
+        });
+
 
         // First update query
         db.query(
@@ -40,7 +58,7 @@ exports.cashCollect = (req, res) => {
                 // Second update query
                 db.query(
                     'UPDATE placc SET Bal = ?, LastTraDat = ?, DailyTotal = ?, EmpCode = ? WHERE AccNo = ?',
-                    [Bal, LastTraDat, DailyTotal, EmpCode, accountNumber],
+                    [Bal, today, DailyTotal, EmpCode, accountNumber],
                     (error, result) => {
                         if (error) {
                             console.log(`Error updating placc for account ${accountNumber}:`, error);
@@ -66,5 +84,7 @@ exports.cashCollect = (req, res) => {
                 );
             }
         );
+
+    // });// daily collection qury
     });
 }
