@@ -2,8 +2,8 @@ const express = require('express');
 
 const app = express(); // Create an instance of an Express app
 
-app.use(express.json()); // for parsing application/json
-app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(express.json({ limit: '50mb' })); // for parsing application/json
+app.use(express.urlencoded({ limit: '50mb', extended: true })); // for parsing application/x-www-form-urlencoded
 
 
 // port number can change in (.env) file and defalt port number 3000

@@ -15,7 +15,7 @@ exports.bankCheque = (req, res) => {
         const { AccNo: accountNumber, Bal, EmpCode, DailyTotal, BankName, CheqNo, CheqDat, RecImg } = details;
 
         // Recipt type
-        const RecType = cheque;
+        const RecType = "cheque";
 
         const currentDate = new Date();
         const LastTraDat = currentDate.toISOString().split('T')[0]; // 'YYYY-MM-DD'
@@ -48,11 +48,11 @@ exports.bankCheque = (req, res) => {
                     (error, result) => {
                         if (error) {
                             console.error(`Error inserting into pltraimg for account ${accountNumber}:`, error);
-                            return sendFinalResponse(index, customerDetails.length, res, {
-                                status: 500,
-                                message: 'Server error, please try again later',
-                            });
-                        }
+                            if (index === customerDetails.length - 1) {
+                                return res.status(500).json({ message: 'Server error, please try again later' });
+                            }
+                            return;
+                        } 
                     // }); // Second query end
 
                 // third update query
