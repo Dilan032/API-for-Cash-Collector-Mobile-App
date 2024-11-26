@@ -1,4 +1,5 @@
 const db = require('../../database');
+const { getDateAndTime } = require('../../functions/dateAndTime'); // Import the function
 
 // Collect amount module for multiple accounts
 exports.bankTransfer = (req, res) => {

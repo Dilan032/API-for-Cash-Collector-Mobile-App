@@ -1,4 +1,5 @@
 const db = require('../../database');
+const { getDateAndTime } = require('../../functions/dateAndTime'); // Import the function
 
 // Collect amount module for multiple accounts
 exports.cashCollect = (req, res) => {
@@ -26,12 +27,26 @@ exports.cashCollect = (req, res) => {
             if (result.length === 0) {
                 return res.status(404).json({ message: 'There is no LastTraDat and DailyTotal' });
 
-            }if(result.LastTraDat === today){
-                DailyTotal = DailyTotal + result.DailyTotal;
-                console.log(DailyTotal);
-                
             }
-        });
+            
+            const lastTransactionDateUTC = result[0].LastTraDat;
+            const lastTransactionDateWithDate = getDateAndTime(lastTransactionDateUTC);
+            const lastTransactionDate = new Date(lastTransactionDateWithDate).toISOString().split('T')[0]; // Extract only the date
+
+            const previousDailyTotal = parseFloat(result[0].DailyTotal); // database curent value
+            let updatedDailyTotal = parseFloat(DailyTotal);// input value
+
+console.log("lastTransactionDate", lastTransactionDate);
+console.log(previousDailyTotal);
+console.log("today",today);
+
+            
+            if (lastTransactionDate === today) {
+                updatedDailyTotal += previousDailyTotal;
+            }
+            console.log("updatedDailyTotal = ",updatedDailyTotal);
+            
+        // }); // end Check and Collect Daily Total
 
 
         // First update query
@@ -58,7 +73,7 @@ exports.cashCollect = (req, res) => {
                 // Second update query
                 db.query(
                     'UPDATE placc SET Bal = ?, LastTraDat = ?, DailyTotal = ?, EmpCode = ? WHERE AccNo = ?',
-                    [Bal, today, DailyTotal, EmpCode, accountNumber],
+                    [Bal, today, updatedDailyTotal, EmpCode, accountNumber],
                     (error, result) => {
                         if (error) {
                             console.log(`Error updating placc for account ${accountNumber}:`, error);
@@ -85,6 +100,6 @@ exports.cashCollect = (req, res) => {
             }
         );
 
-    // });// daily collection qury
+    });// daily collection qury
     });
 }
