@@ -12,7 +12,11 @@ exports.bankTransfer = (req, res) => {
     let updateCount = 0;
 
     customerDetails.forEach((details, index) => {
-        const { AccNo: accountNumber, Bal, EmpCode, DailyTotal, receiptImg } = details;
+        const { AccNo: accountNumber, Bal, EmpCode, DailyTotal, RecImg } = details;
+
+        // Recipt type
+        const RecType = "bankRec";
+
         const currentDate = new Date();
         const LastTraDat = currentDate.toISOString().split('T')[0]; // 'YYYY-MM-DD'
 
@@ -37,7 +41,21 @@ exports.bankTransfer = (req, res) => {
                     return;
                 }
 
-                // Second update query
+                // Second query: Insert into pltraimg
+                db.query(
+                    'INSERT INTO pltraimg (RecType, RecImg, placc_AccNo) VALUES (?, ?, ?)',
+                    [RecType, RecImg, accountNumber],
+                    (error, result) => {
+                        if (error) {
+                            console.error(`Error inserting into pltraimg for account ${accountNumber}:`, error);
+                            if (index === customerDetails.length - 1) {
+                                return res.status(500).json({ message: 'Server error, please try again later' });
+                            }
+                            return;
+                        } 
+                    // }); // Second query end
+
+                // third update query
                 db.query(
                     'UPDATE placc SET Bal = ?, LastTraDat = ?, DailyTotal = ?, EmpCode = ? WHERE AccNo = ?',
                     [Bal, LastTraDat, DailyTotal, EmpCode, accountNumber],
@@ -64,6 +82,7 @@ exports.bankTransfer = (req, res) => {
                         }
                     }
                 );
+            }); // second query end
             }
         );
     });

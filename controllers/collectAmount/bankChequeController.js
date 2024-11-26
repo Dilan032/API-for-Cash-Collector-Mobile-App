@@ -15,7 +15,7 @@ exports.bankCheque = (req, res) => {
         const { AccNo: accountNumber, Bal, EmpCode, DailyTotal, BankName, CheqNo, CheqDat, RecImg } = details;
 
         // Recipt type
-        const RecType = "cheque";
+        const RecType = "chequeRec";
 
         const currentDate = new Date();
         const LastTraDat = currentDate.toISOString().split('T')[0]; // 'YYYY-MM-DD'
