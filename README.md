@@ -5,8 +5,9 @@
 <hr>
 
 ## deployee API
-`npm init -y` <br>
-`npm i body-parser dotenv express jsonwebtoken md5 nodemon nodemailer mysql`
+- `npm init -y` <br>
+- `npm i body-parser dotenv express jsonwebtoken md5 nodemon nodemailer mysql` <br>
+- add .env file
 
 # End-points
 
