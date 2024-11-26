@@ -14,7 +14,7 @@ exports.oneCustomerDetails = (req,res) =>{
     }
     
     // get all details from placc table
-    db.query('SELECT * FROM placc WHERE OpnBal != Bal AND cussup_RegId = ? ORDER BY OpnDat ASC', [RegId],(error, result) =>{
+    db.query('SELECT * FROM placc WHERE CAST(OpnBal AS SIGNED) != CAST(Bal AS SIGNED) AND cussup_RegId = ? ORDER BY DueDat ASC', [RegId],(error, result) =>{
         if (error) {
             console.error('Database error:', error);
             return res.status(500).json({ message: 'Server error, please try again later'  });
