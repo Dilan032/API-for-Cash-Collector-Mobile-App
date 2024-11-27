@@ -46,10 +46,13 @@ exports.bankTransfer = (req, res) => {
             const lastTransactionDate = new Date(lastTransactionDateWithDate).toISOString().split('T')[0]; // Extract only the date
 
             const previousDailyTotal = parseFloat(result[0].DailyTotal); // Current value in database
-            let updatedDailyTotal = parseFloat(DailyTotal); // Input value
+            // let updatedDailyTotal = parseFloat(DailyTotal); // Input value
 
+            let updatedDailyTotal;
             if (lastTransactionDate === today) {
-                updatedDailyTotal += previousDailyTotal;
+                updatedDailyTotal = previousDailyTotal + parseFloat(DailyTotal); // add only if dates match
+            } else {
+                updatedDailyTotal = parseFloat(DailyTotal); // else just use the new daily total
             }
 
             console.log(`Account ${accountNumber}:`);
