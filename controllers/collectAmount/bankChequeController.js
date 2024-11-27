@@ -36,7 +36,10 @@ exports.bankCheque = (req, res) => {
             const lastTransactionDateWithDate = getDateAndTime(lastTransactionDateUTC);
             const lastTransactionDate = new Date(lastTransactionDateWithDate).toISOString().split('T')[0]; // Extract only the date
 
-            const previousDailyTotal = parseFloat(result[0].DailyTotal); // Current value in database
+            // Get the previous DailyTotal for today
+            const previousDailyTotal = (lastTransactionDate === today) ? parseFloat(result[0].DailyTotal) : 0;
+
+            // const previousDailyTotal = parseFloat(result[0].DailyTotal); // Current value in database
             // let updatedDailyTotal = parseFloat(DailyTotal); // Input value
 
             let updatedDailyTotal;

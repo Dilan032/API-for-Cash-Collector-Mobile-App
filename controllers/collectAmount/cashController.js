@@ -33,8 +33,13 @@ exports.cashCollect = (req, res) => {
             const lastTransactionDateWithDate = getDateAndTime(lastTransactionDateUTC);
             const lastTransactionDate = new Date(lastTransactionDateWithDate).toISOString().split('T')[0]; // Extract only the date
 
-            const previousDailyTotal = parseFloat(result[0].DailyTotal); // database curent value
+            // Get the previous DailyTotal for today
+            const previousDailyTotal = (lastTransactionDate === today) ? parseFloat(result[0].DailyTotal) : 0;
+
+            // const previousDailyTotal = parseFloat(result[0].DailyTotal); // database curent value
             // let updatedDailyTotal = parseFloat(DailyTotal);// input value
+
+            console.log("previousDailyTotal", previousDailyTotal);
 
             console.log("lastTransactionDate", lastTransactionDate);
             console.log("today",today);       
@@ -48,7 +53,6 @@ exports.cashCollect = (req, res) => {
             }
 
             
-            console.log("previousDailyTotal", previousDailyTotal);
             console.log("updatedDailyTotal = ",updatedDailyTotal);
             
 
