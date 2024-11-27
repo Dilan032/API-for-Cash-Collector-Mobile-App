@@ -34,20 +34,23 @@ exports.cashCollect = (req, res) => {
             const lastTransactionDate = new Date(lastTransactionDateWithDate).toISOString().split('T')[0]; // Extract only the date
 
             const previousDailyTotal = parseFloat(result[0].DailyTotal); // database curent value
-            let updatedDailyTotal = parseFloat(DailyTotal);// input value
+            // let updatedDailyTotal = parseFloat(DailyTotal);// input value
 
             console.log("lastTransactionDate", lastTransactionDate);
-            console.log(previousDailyTotal);
-            console.log("today",today);
+            console.log("today",today);       
 
             
+            let updatedDailyTotal;
             if (lastTransactionDate === today) {
-                updatedDailyTotal += previousDailyTotal;
+                updatedDailyTotal = previousDailyTotal + parseFloat(DailyTotal); // add only if dates match
+            } else {
+                updatedDailyTotal = parseFloat(DailyTotal); // else just use the new daily total
             }
+
+            
+            console.log("previousDailyTotal", previousDailyTotal);
             console.log("updatedDailyTotal = ",updatedDailyTotal);
             
-        // }); // end Check and Collect Daily Total
-
 
         // First update query
         db.query(
