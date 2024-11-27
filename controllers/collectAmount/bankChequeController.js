@@ -1,5 +1,5 @@
 const db = require('../../database');
-const { getDateAndTime } = require('../../functions/dateAndTime'); // Import the function
+const moment = require('moment-timezone');
 
 // Collect amount module for multiple accounts
 exports.bankCheque = (req, res) => {
@@ -33,14 +33,12 @@ exports.bankCheque = (req, res) => {
 
             // Process LastTraDat and DailyTotal
             const lastTransactionDateUTC = result[0].LastTraDat;
-            const lastTransactionDateWithDate = getDateAndTime(lastTransactionDateUTC);
-            const lastTransactionDate = new Date(lastTransactionDateWithDate).toISOString().split('T')[0]; // Extract only the date
+            
+            // date convert sri lankan standed time
+            const lastTransactionDate = moment.tz(lastTransactionDateUTC, 'Asia/Colombo').format('YYYY-MM-DD');
 
-            // Get the previous DailyTotal for today
-            const previousDailyTotal = (lastTransactionDate === today) ? parseFloat(result[0].DailyTotal) : 0;
-
-            // const previousDailyTotal = parseFloat(result[0].DailyTotal); // Current value in database
-            // let updatedDailyTotal = parseFloat(DailyTotal); // Input value
+            // Calculate previousDailyTotal based on today's date
+            const previousDailyTotal =  parseFloat(result[0].DailyTotal);
 
             let updatedDailyTotal;
             if (lastTransactionDate === today) {
@@ -49,10 +47,12 @@ exports.bankCheque = (req, res) => {
                 updatedDailyTotal = parseFloat(DailyTotal); // else just use the new daily total
             }
 
-            console.log(`Account ${accountNumber}:`);
-            console.log("Last Transaction Date:", lastTransactionDate);
-            console.log("Previous Daily Total:", previousDailyTotal);
-            console.log("Updated Daily Total:", updatedDailyTotal);
+            console.log("last Transaction Date", lastTransactionDate);
+            console.log("today", today);
+            console.log("previous Daily Total", previousDailyTotal);
+            console.log("updated Daily Total = ", updatedDailyTotal);
+            console.log();
+            
 
             // Second query: Update pltra
             db.query(

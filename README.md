@@ -1,12 +1,12 @@
 <h1 align="center"> API for cash Collector back-end </h1>
 
 ## Node.js packages
-| `body-parser` | `dotenv` | `express` | `jsonwebtoken` | `md5` | `nodemon` | `nodemailer` | `mysql` |
+| `body-parser` | `dotenv` | `express` | `jsonwebtoken` | `md5` | `nodemon` | `nodemailer` | `mysql` | `moment-timezone` |
 <hr>
 
 ## deployee API
 - `npm init -y` <br>
-- `npm i body-parser dotenv express jsonwebtoken md5 nodemon nodemailer mysql` <br>
+- `npm i body-parser dotenv express jsonwebtoken md5 nodemon nodemailer mysql moment-timezone` <br>
 - add .env file
 
 # End-points
