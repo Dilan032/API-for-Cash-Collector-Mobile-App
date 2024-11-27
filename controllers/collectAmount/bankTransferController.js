@@ -20,71 +20,108 @@ exports.bankTransfer = (req, res) => {
 
         const currentDate = new Date();
         const LastTraDat = currentDate.toISOString().split('T')[0]; // 'YYYY-MM-DD'
+        const today = currentDate.toISOString().split('T')[0]; // Current date in 'YYYY-MM-DD'
 
-        // First update query
-        db.query(
-            'UPDATE pltra SET Bal = ?, EmpID = ? WHERE placc_AccNo = ?',
-            [Bal, EmpCode, accountNumber],
-            (error, result) => {
-                if (error) {
-                    console.log(`Error updating pltra for account ${accountNumber}:`, error);
-                    if (index === customerDetails.length - 1) {
-                        return res.status(500).json({ message: 'Server error, please try again later' });
-                    }
-                    return;
+        // First query: Check and Collect Daily Total
+        db.query('SELECT LastTraDat, DailyTotal FROM placc WHERE AccNo = ?', [accountNumber], (error, result) => {
+            if (error) {
+                console.error(`Error fetching account details for AccNo ${accountNumber}:`, error);
+                if (index === customerDetails.length - 1) {
+                    return res.status(500).json({ message: 'Server error, please try again later' });
                 }
-
-                if (result.affectedRows === 0) {
-                    console.log(`No rows affected in pltra for account ${accountNumber}`);
-                    if (index === customerDetails.length - 1) {
-                        return res.status(404).json({ message: 'Account not found or no changes made in pltra' });
-                    }
-                    return;
-                }
-
-                // Second query: Insert into pltraimg
-                db.query(
-                    'INSERT INTO pltraimg (RecType, RecImg, placc_AccNo) VALUES (?, ?, ?)',
-                    [RecType, RecImg, accountNumber],
-                    (error, result) => {
-                        if (error) {
-                            console.error(`Error inserting into pltraimg for account ${accountNumber}:`, error);
-                            if (index === customerDetails.length - 1) {
-                                return res.status(500).json({ message: 'Server error, please try again later' });
-                            }
-                            return;
-                        } 
-                    // }); // Second query end
-
-                // third update query
-                db.query(
-                    'UPDATE placc SET Bal = ?, LastTraDat = ?, DailyTotal = ?, EmpCode = ? WHERE AccNo = ?',
-                    [Bal, LastTraDat, DailyTotal, EmpCode, accountNumber],
-                    (error, result) => {
-                        if (error) {
-                            console.log(`Error updating placc for account ${accountNumber}:`, error);
-                            if (index === customerDetails.length - 1) {
-                                return res.status(500).json({ message: 'Server error, please try again later' });
-                            }
-                            return;
-                        }
-
-                        if (result.affectedRows === 0) {
-                            console.log(`No rows affected in placc for account ${accountNumber}`);
-                            if (index === customerDetails.length - 1) {
-                                return res.status(404).json({ message: 'Account not found or no changes made in placc' });
-                            }
-                            return;
-                        }
-
-                        updateCount++;
-                        if (updateCount === customerDetails.length) {
-                            res.status(200).json({ message: 'All accounts updated successfully' });
-                        }
-                    }
-                );
-            }); // second query end
+                return;
             }
-        );
+
+            if (result.length === 0) {
+                console.error(`No account found for AccNo ${accountNumber}`);
+                if (index === customerDetails.length - 1) {
+                    return res.status(404).json({ message: `Account not found for AccNo ${accountNumber}` });
+                }
+                return;
+            }
+
+            // Process LastTraDat and DailyTotal
+            const lastTransactionDateUTC = result[0].LastTraDat;
+            const lastTransactionDateWithDate = getDateAndTime(lastTransactionDateUTC);
+            const lastTransactionDate = new Date(lastTransactionDateWithDate).toISOString().split('T')[0]; // Extract only the date
+
+            const previousDailyTotal = parseFloat(result[0].DailyTotal); // Current value in database
+            let updatedDailyTotal = parseFloat(DailyTotal); // Input value
+
+            if (lastTransactionDate === today) {
+                updatedDailyTotal += previousDailyTotal;
+            }
+
+            console.log(`Account ${accountNumber}:`);
+            console.log("Last Transaction Date:", lastTransactionDate);
+            console.log("Previous Daily Total:", previousDailyTotal);
+            console.log("Updated Daily Total:", updatedDailyTotal);
+
+            // Second update query
+            db.query(
+                'UPDATE pltra SET Bal = ?, EmpID = ? WHERE placc_AccNo = ?',
+                [Bal, EmpCode, accountNumber],
+                (error, result) => {
+                    if (error) {
+                        console.log(`Error updating pltra for account ${accountNumber}:`, error);
+                        if (index === customerDetails.length - 1) {
+                            return res.status(500).json({ message: 'Server error, please try again later' });
+                        }
+                        return;
+                    }
+
+                    if (result.affectedRows === 0) {
+                        console.log(`No rows affected in pltra for account ${accountNumber}`);
+                        if (index === customerDetails.length - 1) {
+                            return res.status(404).json({ message: 'Account not found or no changes made in pltra' });
+                        }
+                        return;
+                    }
+
+                    // Third query: Insert into pltraimg
+                    db.query(
+                        'INSERT INTO pltraimg (RecType, RecImg, placc_AccNo) VALUES (?, ?, ?)',
+                        [RecType, RecImg, accountNumber],
+                        (error, result) => {
+                            if (error) {
+                                console.error(`Error inserting into pltraimg for account ${accountNumber}:`, error);
+                                if (index === customerDetails.length - 1) {
+                                    return res.status(500).json({ message: 'Server error, please try again later' });
+                                }
+                                return;
+                            }
+
+                            // Fourth update query
+                            db.query(
+                                'UPDATE placc SET Bal = ?, LastTraDat = ?, DailyTotal = ?, EmpCode = ? WHERE AccNo = ?',
+                                [Bal, LastTraDat, updatedDailyTotal, EmpCode, accountNumber],
+                                (error, result) => {
+                                    if (error) {
+                                        console.log(`Error updating placc for account ${accountNumber}:`, error);
+                                        if (index === customerDetails.length - 1) {
+                                            return res.status(500).json({ message: 'Server error, please try again later' });
+                                        }
+                                        return;
+                                    }
+
+                                    if (result.affectedRows === 0) {
+                                        console.log(`No rows affected in placc for account ${accountNumber}`);
+                                        if (index === customerDetails.length - 1) {
+                                            return res.status(404).json({ message: 'Account not found or no changes made in placc' });
+                                        }
+                                        return;
+                                    }
+
+                                    updateCount++;
+                                    if (updateCount === customerDetails.length) {
+                                        res.status(200).json({ message: 'All accounts updated successfully' });
+                                    }
+                                }
+                            );
+                        }
+                    );
+                }
+            );
+        });
     });
-}
+};

@@ -36,9 +36,9 @@ exports.cashCollect = (req, res) => {
             const previousDailyTotal = parseFloat(result[0].DailyTotal); // database curent value
             let updatedDailyTotal = parseFloat(DailyTotal);// input value
 
-console.log("lastTransactionDate", lastTransactionDate);
-console.log(previousDailyTotal);
-console.log("today",today);
+            console.log("lastTransactionDate", lastTransactionDate);
+            console.log(previousDailyTotal);
+            console.log("today",today);
 
             
             if (lastTransactionDate === today) {
